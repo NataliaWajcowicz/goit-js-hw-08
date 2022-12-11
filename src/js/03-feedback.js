@@ -7,8 +7,9 @@ const LOCALSTORAGE_KEY = "feedback-form-state";
 input.setAttribute("required",true);
 messageText.setAttribute("required", true);
 
+let returnedObject = {};
 
-updateForm();
+
 form.addEventListener("input", saveForm);
 form.addEventListener("submit", clearForm);
 
@@ -23,17 +24,26 @@ function saveForm() {
         message: `${messageText.value}`,
     };
     localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(object));
-    updateForm();
+    let returnedObject = {};
+
 }
 
+getObjectFromLocalStorage();
+updateForm();
+
+function getObjectFromLocalStorage() {
+    const savedObject = localStorage.getItem(LOCALSTORAGE_KEY);
+    returnedObject = JSON.parse(savedObject);
+    console.log(returnedObject);
+    return returnedObject;
+};
 
 
- function updateForm() {
-     const savedObject = localStorage.getItem(LOCALSTORAGE_KEY);
-     const returnedObject = JSON.parse(savedObject);
-     console.log(returnedObject);
-     input.value = returnedObject.email;
-     messageText.value = returnedObject.message;
+function updateForm() {
+    input.value = returnedObject.email;
+    messageText.value = returnedObject.message;
 } 
+
+
 
 
