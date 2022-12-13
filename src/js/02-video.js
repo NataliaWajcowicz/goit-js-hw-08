@@ -15,24 +15,15 @@ player.getVideoTitle().then(function (title) {
   console.log('title:', title);
 });
 
-function timeTrack() {
-    player.on('timeupdate', function (time) {
-      localStorage.setItem(LOCALSTORAGE, JSON.stringify(time.seconds));
 
-      if (time.seconds >= 568.641) {
-       localStorage.setItem(LOCALSTORAGE, "0.0")
-
-     }
-    
-    });
   
-  }
 
-player.on("play", throttle(function () { timeTrack() }, 1000));
+player.on('timeupdate', throttle(function (time) {
+  localStorage.setItem(LOCALSTORAGE, JSON.stringify(time.seconds))
+},
+  1000));
 
-
-
-player.setCurrentTime(localStorage.getItem(LOCALSTORAGE)).then(function(seconds) {
+player.setCurrentTime(localStorage.getItem(LOCALSTORAGE)).then(function (seconds) {
 }).catch(function(error) {
     switch (error.name) {
         case 'RangeError':
@@ -42,3 +33,10 @@ player.setCurrentTime(localStorage.getItem(LOCALSTORAGE)).then(function(seconds)
             break;
     }
 });
+
+
+player.on("ended", function (time) {
+  setTimeout(() => { localStorage.setItem(LOCALSTORAGE, "0.0") },1000);
+});
+
+
