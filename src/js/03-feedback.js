@@ -28,21 +28,27 @@ function saveForm() {
 
 }
 
-getObjectFromLocalStorage();
 updateForm();
-
-function getObjectFromLocalStorage() {
-    const savedObject = localStorage.getItem(LOCALSTORAGE_KEY);
-    returnedObject = JSON.parse(savedObject);
-    console.log(returnedObject);
-    return returnedObject;
-};
 
 
 function updateForm() {
-    input.value = returnedObject.email;
-    messageText.value = returnedObject.message;
-} 
+    const savedObject = localStorage.getItem(LOCALSTORAGE_KEY) || "";
+    let inputedEmail = "";
+    let inputedMessage = "";
+    if (savedObject === "") {
+        returnedObject = "";
+    } else {
+        returnedObject = JSON.parse(savedObject);
+        inputedEmail = returnedObject.email;
+        inputedMessage = returnedObject.message;
+    }
+
+    input.value = inputedEmail ;
+    messageText.value = inputedMessage;
+    
+    
+};
+
 
 
 
